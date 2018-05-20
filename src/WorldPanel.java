@@ -23,22 +23,42 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 		this.cellsPerRow = cpr;
 	
 		//calculate the cellSize
-	
+	cellSize = w/cpr;
 		
 		//initialize the cells array
-		
+		cells = new Cell[cpr][cpr];
 		
 		//initialize each cell in the array
-		
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells.length; j++) {
+				cells = new Cell[i][j];
+			}
+		}
 	}
 	
 	public void randomizeCells() {
 		// make each cell alive or dead randomly
+		Random r = new Random();
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells.length; j++) {
+				if (r.nextBoolean() == true) {
+					cells[i][j].isAlive = true;
+				}
+				else{
+					cells[i][j].isAlive = false;
+				}
+			}
+		}
 		repaint();
 	}
 	
 	public void clearCells() {
 		// set isAlive to false for all cells
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells.length; j++) {
+				cells[i][j].isAlive = false;
+			}
+		}
 		repaint();
 	}
 	
@@ -57,15 +77,24 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 	@Override
 	public void paintComponent(Graphics g) {
 		//iterate through the cells and draw them
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells.length; j++) {
+				cells[i][j].draw(g);
+			}
+		}
 	}
 	
 	//advances world one step
 	public void step() {
 		//initialize the numLivingNbors variable to be the same size as the cells
 		int[][] numLivingNbors;
-		
+		numLivingNbors = new int[cellSize][cellSize];
 		//iterate through the cells and populate the numLivingNbors array with their neighbors
-		
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells.length; j++) {
+				numLivingNbors[i][j] = getLivingNeighbors(i, j);
+			}
+		}
 		
 		repaint();
 	}
@@ -78,6 +107,15 @@ public class WorldPanel extends JPanel implements MouseListener, ActionListener 
 		//add 1 to livingNeighbors for each
 		//neighboring cell that is alive
 		
+		//check that x > 0, x< length, y > 0, y < height
+		if(x < cells.length ){
+		if (cells[x+1][y].isAlive = true) {
+			livingNeighbors += 1;
+		}
+		if (cells[x+1][y].isAlive = true) {
+			livingNeighbors += 1;
+		}
+		}
 		return livingNeighbors;
 	}
 
